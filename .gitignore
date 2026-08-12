@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Temporary files
+*.tmp
+*.bak
+~$*
+
+# Large source Excel workbooks
+*.xlsm
+
+# Local/system files
+.DS_Store
+Thumbs.db
