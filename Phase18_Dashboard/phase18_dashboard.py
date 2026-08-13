@@ -970,7 +970,6 @@ st.caption("Ask about sales, regions, stockist data, or totals")
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-
 def answer_question(q):
     q = q.lower()
 
@@ -1024,6 +1023,7 @@ def answer_question(q):
 
     else:
         return "I can answer questions about sales, regions, stockist traceability, zones, or totals in this dashboard. Try rephrasing your question, or ask something like 'where are sales concentrated?'"
+
 # ============================================================
 # FOOTER
 # ============================================================
