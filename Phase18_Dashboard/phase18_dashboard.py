@@ -962,67 +962,293 @@ valid YoY comparison requires equivalent 2025 and 2026 YTD periods.
         use_container_width=True,
     )
 # ==============================================================
-# ASK MIKA — SIMPLE Q&A CHATBOT
+# 💬 ASK MIKA — QUESTION BOX
 # ==============================================================
 
 st.header("💬 Ask MIKA")
-st.caption("Ask about sales, regions, stockist data, or totals")
+st.caption(
+    "Ask questions about verified sales, regions, stockist traceability, "
+    "zones, and reporting scope."
+)
+
+# --------------------------------------------------------------
+# CHAT HISTORY
+# --------------------------------------------------------------
 
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+
+
+# --------------------------------------------------------------
+# ANSWER FUNCTION
+# --------------------------------------------------------------
+
 def answer_question(q):
-    q = q.lower()
+    q = q.lower().strip()
+
+    # Scope / methodology — checked first
+    if any(w in q for w in [
+        "scope",
+        "difference",
+        "phase 16 vs",
+        "phase 18 vs",
+        "why separate",
+        "why are they separate",
+        "methodology",
+        "different reporting"
+    ]):
+        return (
+            "Phase 16 is transaction-level analysis based on raw sales records. "
+            "Phase 18 is the official multi-year source total. "
+            "They cover different reporting scopes and are deliberately kept separate."
+        )
 
     # Nairobi / top region
-    if any(w in q for w in ["nairobi", "concentrat", "leading region", "biggest region", "largest region"]):
-        return f"Nairobi contributes {money_short(PHASE16_NAIROBI)} ({PHASE16_NAIROBI_SHARE:.2f}%) of Phase 16 transaction sales — the leading region."
+    elif any(w in q for w in [
+        "nairobi",
+        "concentrat",
+        "leading region",
+        "biggest region",
+        "largest region"
+    ]):
+        return (
+            f"Nairobi contributes {money_short(PHASE16_NAIROBI)} "
+            f"({PHASE16_NAIROBI_SHARE:.2f}%) of Phase 16 transaction sales — "
+            "the leading region."
+        )
 
     # Weakest / lowest region
-    elif any(w in q for w in ["least", "weakest", "lowest", "worst", "smallest region", "underperform"]):
-        return "North Eastern Region has the lowest transaction sales among all regions in Phase 16, at approximately KSh 49.9M."
+    elif any(w in q for w in [
+        "least",
+        "weakest",
+        "lowest",
+        "worst",
+        "smallest region",
+        "underperform"
+    ]):
+        return (
+            "North Eastern Region has the lowest transaction sales among all "
+            "regions in Phase 16, at approximately KSh 49.9M."
+        )
 
     # Missing stockist / traceability
-    elif any(w in q for w in ["missing", "stockist", "traceab", "unidentified", "unknown", "data quality"]):
-        return f"{money_short(PHASE16_MISSING_STOCKIST)} ({PHASE16_MISSING_SHARE:.2f}%) of Phase 16 sales lack identified stockist information. This is a data-quality issue, not automatically lost revenue."
+    elif any(w in q for w in [
+        "missing",
+        "stockist",
+        "traceab",
+        "unidentified",
+        "unknown",
+        "data quality"
+    ]):
+        return (
+            f"{money_short(PHASE16_MISSING_STOCKIST)} "
+            f"({PHASE16_MISSING_SHARE:.2f}%) of Phase 16 sales lack identified "
+            "stockist information. This is a data-quality issue, not "
+            "automatically lost revenue."
+        )
 
     # Identified stockist
-    elif any(w in q for w in ["identified", "known stockist", "traceable sales"]):
-        return f"{money_short(PHASE16_IDENTIFIED_STOCKIST)} ({PHASE16_IDENTIFIED_SHARE:.2f}%) of Phase 16 sales have identified stockist information."
+    elif any(w in q for w in [
+        "identified",
+        "known stockist",
+        "traceable sales"
+    ]):
+        return (
+            f"{money_short(PHASE16_IDENTIFIED_STOCKIST)} "
+            f"({PHASE16_IDENTIFIED_SHARE:.2f}%) of Phase 16 sales have "
+            "identified stockist information."
+        )
 
     # Local sales / selling type
-    elif any(w in q for w in ["local", "selling type", "channel", "online", "office sales"]):
-        return f"Local sales contribute {money_short(PHASE16_LOCAL_SALES)}, equal to {PHASE16_LOCAL_SHARE:.2f}% of total Phase 16 transaction sales — by far the dominant selling type."
+    elif any(w in q for w in [
+        "local",
+        "selling type",
+        "channel",
+        "online",
+        "office sales"
+    ]):
+        return (
+            f"Local sales contribute {money_short(PHASE16_LOCAL_SALES)}, "
+            f"equal to {PHASE16_LOCAL_SHARE:.2f}% of total Phase 16 "
+            "transaction sales — by far the dominant selling type."
+        )
 
     # Top zone
-    elif any(w in q for w in ["zone", "strongest", "top area", "best performing"]):
-        return f"{PHASE16_TOP_ZONE} is the strongest zone with {money_short(PHASE16_TOP_ZONE_SALES)} in sales."
+    elif any(w in q for w in [
+        "zone",
+        "strongest",
+        "top area",
+        "best performing"
+    ]):
+        return (
+            f"{PHASE16_TOP_ZONE} is the strongest zone with "
+            f"{money_short(PHASE16_TOP_ZONE_SALES)} in sales."
+        )
 
     # Phase 18 / official / 2026
-    elif any(w in q for w in ["2026", "official", "phase 18", "source total", "multi-year"]):
-        return f"Phase 18 official 2026 source total is {money_short(PHASE18_2026_TOTAL)}. This is a separate reporting scope from Phase 16 and should not be combined with it."
+    elif any(w in q for w in [
+        "2026",
+        "official",
+        "phase 18",
+        "source total",
+        "multi-year"
+    ]):
+        return (
+            f"Phase 18 official 2026 source total is "
+            f"{money_short(PHASE18_2026_TOTAL)}. "
+            "This is a separate reporting scope from Phase 16 and should "
+            "not be combined with it."
+        )
 
     # Growth / YoY / trend
-    elif any(w in q for w in ["growth", "yoy", "year on year", "trend", "compare", "increase", "decrease"]):
-        return "YoY growth is not shown as a management KPI because 2026 is a partial (YTD) year — comparing it to a full prior year would be misleading. A valid comparison requires equivalent YTD periods."
+    elif any(w in q for w in [
+        "growth",
+        "yoy",
+        "year on year",
+        "trend",
+        "increase",
+        "decrease"
+    ]):
+        return (
+            "YoY growth is not shown as a management KPI because 2026 is a "
+            "partial YTD year. Comparing it to a full prior year would be "
+            "misleading. A valid comparison requires equivalent YTD periods."
+        )
 
     # Records / data volume
-    elif any(w in q for w in ["record", "how many", "data point", "sample size", "rows"]):
-        return f"Phase 16 analysis covers {PHASE16_RECORDS} transaction records."
+    elif any(w in q for w in [
+        "record",
+        "how many",
+        "data point",
+        "sample size",
+        "rows"
+    ]):
+        return (
+            f"Phase 16 analysis covers {PHASE16_RECORDS} transaction records."
+        )
 
-    # Phase 16 total / general sales
-    elif any(w in q for w in ["total", "how much", "phase 16", "revenue", "sales figure", "overall"]):
-        return f"Phase 16 total transaction sales: {money_short(PHASE16_TOTAL)}, across {PHASE16_RECORDS} records."
+    # Phase 16 total
+    elif any(w in q for w in [
+        "total",
+        "how much",
+        "phase 16",
+        "revenue",
+        "sales figure",
+        "overall"
+    ]):
+        return (
+            f"Phase 16 total transaction sales are "
+            f"{money_short(PHASE16_TOTAL)}, across "
+            f"{PHASE16_RECORDS} records."
+        )
 
-    # Scope / methodology
-    elif any(w in q for w in ["scope", "difference", "phase 16 vs", "phase 18 vs", "why separate", "methodology"]):
-        return "Phase 16 is transaction-level analysis (raw sales records). Phase 18 is the official multi-year source total. They cover different reporting scopes and are deliberately kept separate."
+    # General sales / dashboard question
+    elif any(w in q for w in [
+        "sales",
+        "database",
+        "data",
+        "figure",
+        "number",
+        "report",
+        "dashboard"
+    ]):
+        return (
+            f"Here's a quick overview: Phase 16 total sales are "
+            f"{money_short(PHASE16_TOTAL)} across {PHASE16_RECORDS} records. "
+            f"Nairobi is the leading region at "
+            f"{PHASE16_NAIROBI_SHARE:.2f}% of transaction sales, while "
+            f"{PHASE16_MISSING_SHARE:.2f}% of sales lack identified "
+            "stockist information."
+        )
 
-    # Generic sales/database catch-all
-    elif any(w in q for w in ["sales", "database", "data", "figure", "number", "report", "dashboard"]):
-        return f"Here's a quick overview: Phase 16 total sales are {money_short(PHASE16_TOTAL)} across {PHASE16_RECORDS} records, with Nairobi as the top region ({PHASE16_NAIROBI_SHARE:.2f}%) and {PHASE16_MISSING_SHARE:.2f}% of sales lacking stockist data. Ask me about a specific region, zone, or total for more detail."
-
+    # Unknown question
     else:
-        return "I can answer questions about sales, regions, stockist traceability, zones, or totals in this dashboard. Try rephrasing your question, or ask something like 'where are sales concentrated?'"
+        return (
+            "I can answer questions about sales, regions, stockist "
+            "traceability, zones, Phase 16, and Phase 18. "
+            "Try asking: 'Where are sales concentrated?'"
+        )
+
+
+# --------------------------------------------------------------
+# EXAMPLE QUESTIONS
+# --------------------------------------------------------------
+
+st.markdown("**Try asking:**")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.info("📍 Where are sales concentrated?")
+
+with col2:
+    st.info("📊 What is the Phase 16 total?")
+
+with col3:
+    st.info("🔎 How much sales lack stockist data?")
+
+
+# --------------------------------------------------------------
+# DISPLAY CHAT HISTORY
+# --------------------------------------------------------------
+
+for msg in st.session_state.chat_history:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+
+# --------------------------------------------------------------
+# QUESTION BOX
+# --------------------------------------------------------------
+
+user_q = st.chat_input(
+    "💬 Type your question about the MIKA sales data..."
+)
+
+
+# --------------------------------------------------------------
+# PROCESS QUESTION
+# --------------------------------------------------------------
+
+if user_q:
+
+    # Store user question
+    st.session_state.chat_history.append(
+        {
+            "role": "user",
+            "content": user_q
+        }
+    )
+
+    # Display user question
+    with st.chat_message("user"):
+        st.write(user_q)
+
+    # Generate answer
+    reply = answer_question(user_q)
+
+    # Store answer
+    st.session_state.chat_history.append(
+        {
+            "role": "assistant",
+            "content": reply
+        }
+    )
+
+    # Display answer
+    with st.chat_message("assistant"):
+        st.write(reply)
+
+
+# --------------------------------------------------------------
+# CLEAR CHAT
+# --------------------------------------------------------------
+
+if st.session_state.chat_history:
+
+    if st.button("🗑️ Clear Ask MIKA"):
+        st.session_state.chat_history = []
+        st.rerun()
 
 # ============================================================
 # FOOTER
