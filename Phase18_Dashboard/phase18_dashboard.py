@@ -457,7 +457,7 @@ They are deliberately **NOT combined**.
 # PHASE 16 ANALYSIS
 # ============================================================
 
-elif scope == "Phase 16 Analysis":
+elif "Phase 16 Analysis" in scope:
 
     st.header(
         "📊 Phase 16 — Transaction-Level Analysis"
