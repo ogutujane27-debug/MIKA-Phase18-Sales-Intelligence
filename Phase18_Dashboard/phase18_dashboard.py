@@ -785,7 +785,7 @@ source totals until business-level scope equivalence is confirmed.
 # PHASE 18 OFFICIAL SOURCE
 # ============================================================
 
-elif scope == "Phase 18 Official Source":
+elif "Phase 18 Official Source" in scope:
 
     st.header(
         "📈 Phase 18 — Official Multi-Year Source"
