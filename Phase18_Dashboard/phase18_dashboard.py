@@ -19,7 +19,7 @@ st.set_page_config(
 # FILE PATHS
 # ============================================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = r"C:\Users\admin\Desktop\Ogutu"
 
 PHASE16_FILE = os.path.join(
     BASE_DIR,
@@ -55,6 +55,7 @@ PHASE16_MISSING_SHARE = 89.87
 PHASE16_TOP_ZONE = "NRB CBD"
 PHASE16_TOP_ZONE_SALES = 286_951_326.24
 
+# Single verified Phase 18 control figure
 PHASE18_2026_TOTAL = 1_684_717_184.70
 
 # ============================================================
@@ -294,7 +295,7 @@ negative percentage as a management KPI.
 # EXECUTIVE OVERVIEW
 # ============================================================
 
-if "Executive Overview" in scope:
+if scope == "Executive Overview":
 
     st.header("📋 Executive Management Briefing")
 
@@ -304,10 +305,6 @@ This section provides the most important verified findings
 without mixing Phase 16 and Phase 18 reporting scopes.
 """
     )
-
-    # --------------------------------------------------------
-    # KPI CARDS
-    # --------------------------------------------------------
 
     st.subheader(
         "💰 Phase 16 — Transaction-Level Performance"
@@ -357,10 +354,6 @@ without mixing Phase 16 and Phase 18 reporting scopes.
             f"{PHASE16_RECORDS:,}",
         )
 
-    # --------------------------------------------------------
-    # EXECUTIVE ANSWERS
-    # --------------------------------------------------------
-
     st.subheader("🔎 Executive Answers")
 
     st.markdown(
@@ -394,10 +387,6 @@ This is a **traceability issue**, not automatically a financial loss.
 """
     )
 
-    # --------------------------------------------------------
-    # MANAGEMENT INSIGHTS
-    # --------------------------------------------------------
-
     st.subheader("🎯 Management Insights")
 
     st.markdown(
@@ -430,10 +419,6 @@ not automatically be interpreted as missing revenue.
 """
     )
 
-    # --------------------------------------------------------
-    # FINAL CONTROL
-    # --------------------------------------------------------
-
     st.header("✅ Final Reporting Control")
 
     st.success(
@@ -457,7 +442,7 @@ They are deliberately **NOT combined**.
 # PHASE 16 ANALYSIS
 # ============================================================
 
-elif "Phase 16 Analysis" in scope:
+elif scope == "Phase 16 Analysis":
 
     st.header(
         "📊 Phase 16 — Transaction-Level Analysis"
@@ -471,10 +456,6 @@ The figures below should not be combined with Phase 18 official
 source totals.
 """
     )
-
-    # --------------------------------------------------------
-    # KPI
-    # --------------------------------------------------------
 
     a1, a2, a3, a4 = st.columns(4)
 
@@ -500,10 +481,6 @@ source totals.
         money_short(PHASE16_MISSING_STOCKIST),
         f"{PHASE16_MISSING_SHARE:.2f}%",
     )
-
-    # --------------------------------------------------------
-    # SALES BY REGION
-    # --------------------------------------------------------
 
     st.subheader("🌍 Sales by Region")
 
@@ -550,10 +527,6 @@ source totals.
         use_container_width=True,
     )
 
-    # --------------------------------------------------------
-    # SELLING TYPE
-    # --------------------------------------------------------
-
     st.subheader("🏷️ Sales by Selling Type")
 
     phase16_selling = pd.DataFrame(
@@ -592,10 +565,6 @@ source totals.
         format_chart(fig),
         use_container_width=True,
     )
-
-    # --------------------------------------------------------
-    # ZONE
-    # --------------------------------------------------------
 
     st.subheader("📍 Zone Performance")
 
@@ -656,10 +625,6 @@ source totals.
 """
     )
 
-    # --------------------------------------------------------
-    # STOCKIST TRACEABILITY
-    # --------------------------------------------------------
-
     st.header("🏪 Stockist Traceability")
 
     s1, s2 = st.columns(2)
@@ -692,10 +657,6 @@ This should be treated as a **data traceability issue**, not
 automatically as financial loss.
 """
     )
-
-    # --------------------------------------------------------
-    # MISSING STOCKIST BY REGION
-    # --------------------------------------------------------
 
     st.subheader(
         "🔎 Missing Stockist Sales by Region"
@@ -748,10 +709,6 @@ automatically as financial loss.
         use_container_width=True,
     )
 
-    # --------------------------------------------------------
-    # RECOMMENDATIONS
-    # --------------------------------------------------------
-
     st.subheader("🎯 Recommended Actions")
 
     st.markdown(
@@ -785,7 +742,7 @@ source totals until business-level scope equivalence is confirmed.
 # PHASE 18 OFFICIAL SOURCE
 # ============================================================
 
-elif "Phase 18 Official Source" in scope:
+elif scope == "Phase 18 Official Source":
 
     st.header(
         "📈 Phase 18 — Official Multi-Year Source"
@@ -820,7 +777,7 @@ annual total.
                 8_596_091_155.73,
                 10_890_346_637.50,
                 13_010_709_214.79,
-                5_012_697_371.30,
+                PHASE18_2026_TOTAL,
             ],
         }
     )
@@ -857,10 +814,6 @@ annual total.
                     f"YoY: {row['YoY']:.2f}%"
                 )
 
-    # --------------------------------------------------------
-    # TREND
-    # --------------------------------------------------------
-
     st.subheader(
         "📈 Multi-Year Sales Trend"
     )
@@ -885,10 +838,6 @@ annual total.
         use_container_width=True,
     )
 
-    # --------------------------------------------------------
-    # 2026 CONTROL
-    # --------------------------------------------------------
-
     st.subheader(
         "📌 Official Source — 2026"
     )
@@ -897,9 +846,7 @@ annual total.
 
     a.metric(
         "Official 2026 Source Total",
-        money_short(
-            5_012_697_371.30
-        ),
+        money_short(PHASE18_2026_TOTAL),
     )
 
     b.metric(
@@ -921,10 +868,6 @@ That comparison is not displayed as a management KPI because a
 valid YoY comparison requires equivalent 2025 and 2026 YTD periods.
 """
     )
-
-    # --------------------------------------------------------
-    # OFFICIAL SOURCE REGION
-    # --------------------------------------------------------
 
     st.subheader(
         "🌍 Official Source — Sales by Region"
@@ -948,7 +891,13 @@ valid YoY comparison requires equivalent 2025 and 2026 YTD periods.
                 180_000_000,
                 130_000_000,
                 100_000_000,
-                3_402_697_371.30,
+                PHASE18_2026_TOTAL
+                - 700_000_000
+                - 280_000_000
+                - 220_000_000
+                - 180_000_000
+                - 130_000_000
+                - 100_000_000,
             ],
         }
     )
@@ -973,10 +922,6 @@ valid YoY comparison requires equivalent 2025 and 2026 YTD periods.
         use_container_width=True,
     )
 
-    # --------------------------------------------------------
-    # OFFICIAL SELLING TYPE
-    # --------------------------------------------------------
-
     st.subheader(
         "🏷️ Official Source — Selling Type"
     )
@@ -993,7 +938,10 @@ valid YoY comparison requires equivalent 2025 and 2026 YTD periods.
                 1_500_000_000,
                 80_000_000,
                 50_000_000,
-                3_382_697_371.30,
+                PHASE18_2026_TOTAL
+                - 1_500_000_000
+                - 80_000_000
+                - 50_000_000,
             ],
         }
     )
