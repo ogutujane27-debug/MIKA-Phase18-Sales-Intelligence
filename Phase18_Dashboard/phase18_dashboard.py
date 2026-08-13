@@ -16,19 +16,20 @@ st.set_page_config(
 )
 
 # ============================================================
-# FILE PATHS
+# FILE PATHS — STREAMLIT CLOUD / GITHUB
 # ============================================================
 
-BASE_DIR = r"C:\Users\admin\Desktop\Ogutu"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 PHASE16_FILE = os.path.join(
     BASE_DIR,
+    "..",
     "Phase16_MIKA_Sales_Intelligence_Engine.xlsx",
 )
 
 PHASE18C_FILE = os.path.join(
     BASE_DIR,
-    "Phase18_MIKA_Sales_Intelligence",
+    "..",
     "Phase18C_Corrected_Engine",
     "Phase18C_MIKA_Corrected_Intelligence.xlsx",
 )
