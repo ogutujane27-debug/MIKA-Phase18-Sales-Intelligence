@@ -961,7 +961,51 @@ valid YoY comparison requires equivalent 2025 and 2026 YTD periods.
         format_chart(fig),
         use_container_width=True,
     )
+# ==============================================================
+# ASK MIKA — SIMPLE Q&A CHATBOT
+# ==============================================================
 
+st.header("💬 Ask MIKA")
+st.caption("Ask about sales, regions, stockist data, or totals")
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+def answer_question(q):
+    q = q.lower()
+
+    if "nairobi" in q:
+        return f"Nairobi contributes {money_short(PHASE16_NAIROBI)} ({PHASE16_NAIROBI_SHARE:.2f}%) of Phase 16 transaction sales — the leading region."
+    elif "missing" in q or "stockist" in q or "traceab" in q:
+        return f"{money_short(PHASE16_MISSING_STOCKIST)} ({PHASE16_MISSING_SHARE:.2f}%) of Phase 16 sales lack identified stockist information. This is a data-quality issue, not automatically lost revenue."
+    elif "local" in q or "selling type" in q:
+        return f"Local sales contribute {money_short(PHASE16_LOCAL_SALES)}, equal to {PHASE16_LOCAL_SHARE:.2f}% of total Phase 16 transaction sales."
+    elif "zone" in q or "strongest" in q or "top" in q:
+        return f"{PHASE16_TOP_ZONE} is the strongest zone with {money_short(PHASE16_TOP_ZONE_SALES)} in sales."
+    elif "2026" in q or "official" in q or "phase 18" in q:
+        return f"Phase 18 official 2026 source total is {money_short(PHASE18_2026_TOTAL)}. This figure is a separate reporting scope from Phase 16 and should not be combined with it."
+    elif "total" in q or "how much" in q or "phase 16" in q:
+        return f"Phase 16 total transaction sales: {money_short(PHASE16_TOTAL)}, across {PHASE16_RECORDS} records."
+    elif "record" in q:
+        return f"Phase 16 analysis covers {PHASE16_RECORDS} transaction records."
+    else:
+        return "I can answer questions about: Nairobi sales, missing stockist data, local sales share, top zone, Phase 16 totals, or Phase 18 official 2026 totals. Try asking about one of those."
+
+for msg in st.session_state.chat_history:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+user_q = st.chat_input("Ask a question about the sales data...")
+
+if user_q:
+    st.session_state.chat_history.append({"role": "user", "content": user_q})
+    with st.chat_message("user"):
+        st.write(user_q)
+
+    reply = answer_question(user_q)
+    st.session_state.chat_history.append({"role": "assistant", "content": reply})
+    with st.chat_message("assistant"):
+        st.write(reply)
 # ============================================================
 # FOOTER
 # ============================================================
