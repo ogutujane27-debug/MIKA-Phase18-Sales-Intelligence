@@ -19,7 +19,7 @@ st.set_page_config(
 # FILE PATHS
 # ============================================================
 
-BASE_DIR = r"C:\Users\admin\Desktop\Ogutu"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 PHASE16_FILE = os.path.join(
     BASE_DIR,
