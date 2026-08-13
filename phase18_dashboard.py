@@ -19,11 +19,7 @@ st.set_page_config(
 # FILE PATH
 # ============================================================
 
-SOURCE_FILE = (
-    r"C:\Users\admin\Desktop\Ogutu"
-    r"\Phase18_MIKA_Sales_Intelligence"
-    r"\Phase18_MIKA_Year_Reconciliation.xlsx"
-)
+SOURCE_FILE = "Phase18_MIKA_Year_Reconciliation.xlsx"
 
 # ============================================================
 # VERIFIED PHASE 18 FIGURES
