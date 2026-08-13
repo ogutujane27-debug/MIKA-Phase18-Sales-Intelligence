@@ -294,7 +294,7 @@ negative percentage as a management KPI.
 # EXECUTIVE OVERVIEW
 # ============================================================
 
-if scope == "Executive Overview":
+if "Executive Overview" in scope:
 
     st.header("📋 Executive Management Briefing")
 
